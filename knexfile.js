@@ -4,13 +4,13 @@ require('dotenv').config()
 module.exports = {
   development: {
     client: 'pg',
-    version: '7.2',
-    connection: {
-      host: process.env.POSTGRES_HOST,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB
-    },
+    // connection: {
+    //   host: process.env.POSTGRES_HOST,
+    //   user: process.env.POSTGRES_USER,
+    //   password: process.env.POSTGRES_PASSWORD,
+    //   database: process.env.POSTGRES_DB
+    // },
+    connection: process.env.DATABASE_URL,
     migrations: {
       directory: './db/migrations',
       tableName: 'migrations'
@@ -20,8 +20,7 @@ module.exports = {
     }
   },
   staging: {
-    client: 'pg',
-    version: '7.2',
+    client: 'postgresql',
     connection: {
       host: process.env.POSTGRES_HOST,
       user: process.env.POSTGRES_USER,
@@ -38,8 +37,7 @@ module.exports = {
   },
 
   production: {
-    client: 'pg',
-    version: '7.2',
+    client: 'postgresql',
     connection: {
       host: process.env.POSTGRES_HOST,
       user: process.env.POSTGRES_USER,

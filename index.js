@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-// const pg = require('knex')({ client: 'pg'})
+const pg = require('knex')({ client: 'pg'})
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
