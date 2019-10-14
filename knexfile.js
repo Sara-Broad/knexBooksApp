@@ -1,44 +1,57 @@
 // Update with your config settings.
+require('dotenv').config()
 
 module.exports = {
-
   development: {
-    client: 'sqlite3',
+    client: 'pg',
+    version: '7.2',
     connection: {
-      filename: './dev.sqlite3'
-    }
-  },
-
-  staging: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
+      host: process.env.POSTGRES_HOST,
+      user: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB
     },
     migrations: {
-      tableName: 'knex_migrations'
+      directory: './db/migrations',
+      tableName: 'migrations'
+    },
+    seeds: {
+      directory: './db/seeds'
+    }
+  },
+  staging: {
+    client: 'pg',
+    version: '7.2',
+    connection: {
+      host: process.env.POSTGRES_HOST,
+      user: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB
+    },
+    migrations: {
+      directory: './db/migrations',
+      tableName: 'migrations'
+    },
+    seeds: {
+      directory: './db/seeds'
     }
   },
 
   production: {
-    client: 'postgresql',
+    client: 'pg',
+    version: '7.2',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
+      host: process.env.POSTGRES_HOST,
+      user: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB
     },
     migrations: {
-      tableName: 'knex_migrations'
+      directory: './db/migrations',
+      tableName: 'migrations'
+    },
+    seeds: {
+      directory: './db/seeds'
     }
   }
-
-};
+}
