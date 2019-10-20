@@ -1,3 +1,5 @@
+// this contains knex queries that can be made without Express
+
 require('dotenv').config()
 const knex = require('./db/knex.js')
 
