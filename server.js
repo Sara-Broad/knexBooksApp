@@ -10,24 +10,25 @@ const app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.get('/Books', function(res, req) {
-//     knex.raw('select * from Books')
-//     .then(function(books) {
-//         res.send(books)
-//     })
-// })
-
-// app.get("/Books", async (req, res) => {
-//     const books = await knex("Books");
-//     res.json({ Books })
-// })
-
 app.get('/', function (req, res) {
     res.send('database connection')
 })
 
-app.get('/Books', function (req, res) {
-    res.send('Books database connection')
+app.get('/books', function (req, res) {
+    knex.select('*').from('Books')
+    .then(function(books) {
+        console.log(books)
+        res.send(books)
+    })
+})
+
+app.get('/books/:id', function (req, res) {
+    console.log('req', req.params)
+    knex('Books').where('id', req.params.id)
+    .then(function(book) {
+        console.log(book)
+        res.send(book)
+    })
 })
 
 app.listen(PORT, function() {
