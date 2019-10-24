@@ -35,6 +35,10 @@ const allBooksController = {
 
     addBook (req, res) {
 
+    },
+
+    changeRating (req, res) {
+        
     }
 }
 
