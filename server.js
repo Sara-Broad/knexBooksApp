@@ -14,6 +14,8 @@ app.get('/', function (req, res) {
     res.send('database connection')
 })
 
+// I will be moving this to routes and controllers
+
 app.get('/books', function (req, res) {
     knex.select('*').from('Books')
     .then(function(books) {
