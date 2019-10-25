@@ -1,18 +1,22 @@
-require('dotenv').config()
-
+// require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser')
 const PORT = 8000
-const knex = require('./db/knex.js')
 
 const app = express();
 
-app.use(bodyParser.json())
+const routes = require("./routes");
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 app.get('/', function (req, res) {
     res.send('database connection')
 })
+
+app.use('/api/books', routes);
+
+
 
 // I will be moving this to routes and controllers
 
@@ -37,3 +41,5 @@ app.get('/', function (req, res) {
 app.listen(PORT, function() {
     console.log(`App listening on port ${PORT}`)
 })
+
+module.exports = app;
