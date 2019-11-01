@@ -1,20 +1,36 @@
-// require('dotenv').config()
-var router = require("express").Router();
-const booksController = ('../controllers/booksController');
+const express = require('express')
+const db = require('../../db/knex')
+const router = express.Router()
 
+router.get('/books', (req, res) => {
+    console.log(req.body)
+    db.getAllBooks().then(books => {
+      console.log('BOOKSSSS', books)
+      res.send(books)
+    })
+    .catch(err => {
+        res.status(500).send('DATABASE ERROR: ' + err.message)
+      })
+  })
 
-router.get('/books', booksController.selectAllBooks)
+router.get('/books/sort', (req, res) => {
+    db.ascendingRatingSort().then(books => {
+        res.send(books)
+    })
+      .catch(err => {
+        res.status(500).send('DATABASE ERROR: ' + err.message)
+      })
+  })
 
-// module.exports = function(app) {
-//   app.get('/books', booksController.getAllBooks)
-// }
-
-// router.get('/books', function (req, res) {
-//     knex.select('*').from('Books')
-//     .then(function(books) {
-//         console.log(books)
-//         res.send(books)
-//     })
-// })
+router.get('/books/:id', (req, res) => {
+    console.log('bookId', req.params.id)
+    db.queryById(req.params.id).then(books => {
+        console.log(books)
+        res.send(books)
+    })
+    .catch(err => {
+        res.status(500).send('DATABASE ERROR: ' + err.message)
+      })
+})
 
 module.exports = router;
