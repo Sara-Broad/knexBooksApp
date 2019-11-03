@@ -25,19 +25,24 @@ function ascendingRatingSort(db = connection) {
     return db('Books').orderBy('rating', 'asc')
 }
 
+function addBook(newBook, db = connection) {
+    return db('Books').insert(newBook)
+}
+
+function deleteBook(bookId, db = connection) {
+    return db('Books').where('id', bookId).del()
+}
+
+function changeRating(rating, id, db = connection) {
+    return db('Books').where('id', '=', id).update(rating)
+}
+
+
 module.exports = {
     getAllBooks: getAllBooks,
     queryById: queryById,
-    ascendingRatingSort: ascendingRatingSort
+    ascendingRatingSort: ascendingRatingSort,
+    addBook: addBook,
+    deleteBook: deleteBook,
+    changeRating: changeRating
 }
-
-// function getUser (id, db = connection) {
-//   return db('users').where('id', id).first()
-// }
-
-// function ascendingRatingSort() {
-//     knex('Books').orderBy('rating', 'asc')
-//     .then(result => {
-//         console.log(result)
-//     })
-// }
