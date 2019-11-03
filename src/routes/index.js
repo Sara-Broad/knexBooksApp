@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require('../../db/knex')
+const db = require('../../db/knexQueries')
 const router = express.Router()
 
 router.get('/books', (req, res) => {
