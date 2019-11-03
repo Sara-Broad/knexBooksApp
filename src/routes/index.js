@@ -56,6 +56,7 @@ router.delete('/books/:id', (req, res) => {
 router.put('/books/:id', (req, res) => {
   let id = req.params.id
   db.changeRating(req.body, id).then(books => {
+    console.log('The rating has been changed')
     res.json(books)
   })
   .catch(err => {
