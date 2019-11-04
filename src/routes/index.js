@@ -3,7 +3,6 @@ const db = require('../../db/knexQueries')
 const router = express.Router()
 
 router.get('/books', (req, res) => {
-  console.log(req.body)
   db.getAllBooks().then(books => {
       console.log('BOOKSSSS', books)
       res.send(books)
@@ -25,7 +24,6 @@ router.get('/books/sort', (req, res) => {
 router.get('/books/:id', (req, res) => {
   let bookId = req.params.id
   db.queryById(bookId).then(books => {
-      console.log(books)
       res.send(books)
     })
     .catch(err => {
@@ -44,7 +42,6 @@ router.post('/books', (req, res) => {
 
 router.delete('/books/:id', (req, res) => {
   let bookId = req.params.id
-  console.log(bookId)
   db.deleteBook(bookId).then(books => {
       res.json(books)
     })
