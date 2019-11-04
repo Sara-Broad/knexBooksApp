@@ -1,6 +1,6 @@
 var db = require('./knex.js')
 
-function Books(db = connection) {
+function Books() {
     return db('Books')
 }
 
