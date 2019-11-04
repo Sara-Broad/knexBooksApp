@@ -75,16 +75,15 @@ describe('GET /books/:id', () => {
     });
     it('should return the correct response body', async () => {
         const newBook = await request(app).post('/books').send({ id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300, rating: 5 });
-        // console.log(newBook)
         const res = await request(app).get('/books/1');
-        // console.log('res', res)
+        console.log('resBody', res.body)
         expect(res.body[0].title).toBe('test');
     });
-    // it('should return a 404 error if a book with a specific id does not exist', async () => {
-    //     await request(app).get('/books/50')
-    //     .then((res) => {
-    //         console.log(res.status)
-    //         expect(res.body.message).toEqual('The book with the specified ID does not exist.')
-    //     });
-    // });
+    it('should return a 404 error if a book with a specific id does not exist', async () => {
+        await request(app).get('/books/50')
+        .then((res) => {
+            console.log(res.status)
+            expect(res.status).toEqual(404)
+        });
+    });
 });

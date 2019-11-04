@@ -21,15 +21,38 @@ router.get('/books/sort', (req, res) => {
     })
 })
 
+// router.get('/books/:id', (req, res) => {
+//   let bookId = req.params.id
+//   db.queryById(bookId)
+//   .then(books => {
+//       res.send(books)
+//     })
+//     .catch(err => {
+//       res.status(500).send('DATABASE ERROR: ' + err.message)
+//     })
+// })
+
+
 router.get('/books/:id', (req, res) => {
-  let bookId = req.params.id
-  db.queryById(bookId).then(books => {
-      res.send(books)
+  const bookId = req.params.id
+  console.log(bookId)
+  db.queryById(bookId)
+    .then((books) => {
+      const booksAvailable = books.find(b => b.id === bookId)
+      console.log('booksAvailable', booksAvailable)
+      // if (!book) {
+      if (!books) {
+        res.status(404).json({ message: 'The book with the specified ID does not exist.' });
+      } 
+      else {
+        // res.send(books)
+       res.status(200).json(books)
+      }
     })
-    .catch(err => {
-      res.status(500).send('DATABASE ERROR: ' + err.message)
-    })
-})
+    .catch((error) => {
+      res.status(500).json({ errorMessage: 'The book could not be removed.' });
+    });
+});
 
 router.post('/books', (req, res) => {
   db.addBook(req.body).then(books => {
