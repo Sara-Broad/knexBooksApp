@@ -82,7 +82,7 @@ describe('POST /books', () => {
             res.body.author = 'test'
           })
     });
-    it.only('should return a 500 error if a constraint is missing from the request', async () => {
+    it('should return a 500 error if a constraint is missing from the request', async () => {
         const res = await request(app).post('/books').send({ id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300 });
 
         expect(res.status).toEqual(500) 
