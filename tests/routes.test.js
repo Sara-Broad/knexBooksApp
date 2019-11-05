@@ -45,14 +45,46 @@ describe('GET /books/:id', () => {
     it('should return the correct response body', async () => {
         const newBook = await request(app).post('/books').send({ id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300, rating: 5 });
         const res = await request(app).get('/books/1');
-        console.log('resBody', res.body)
+
         expect(res.body[0].title).toBe('test');
     });
     it('should return a 404 error if a book with a specific id does not exist', async () => {
         await request(app).get('/books/50')
         .then((res) => {
-            console.log(res.status)
             expect(res.status).toEqual(404)
         });
     });
 });
+
+describe('POST /books', () => {
+    beforeEach(async () => {
+        await db('Books').truncate();
+    });
+    afterEach(async () => {
+        await db('Books').truncate();
+    });
+
+    it('should return status code 200 when request is successful', async () => {
+        const res = await request(app).post('/books').send({ id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300, rating: 5 });
+
+        expect(res.status).toEqual(200)
+    });
+    it('should return the new books entry when the request is successful', async () => {
+        // const newBook = await request(app).post('/books').send({ id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300, rating: 5 });
+        // console.log(newBook.body)
+        const res = await request(app)
+        .post("/books")
+        .send({
+            id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300, rating: 5
+        })
+        .expect(function(res) {
+            res.body.id = 1;
+            res.body.author = 'test'
+          })
+    });
+    it.only('should return a 500 error if a constraint is missing from the request', async () => {
+        const res = await request(app).post('/books').send({ id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300 });
+
+        expect(res.status).toEqual(500) 
+    });
+})

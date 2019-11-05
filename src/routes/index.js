@@ -35,13 +35,9 @@ router.get('/books/sort', (req, res) => {
 
 router.get('/books/:id', (req, res) => {
   const bookId = req.params.id
-  console.log(bookId)
   db.queryById(bookId)
     .then((books) => {
-      const booksAvailable = books.find(b => b.id === bookId)
-      console.log('booksAvailable', booksAvailable)
-      // if (!book) {
-      if (!books) {
+      if (books.length < 1) {
         res.status(404).json({ message: 'The book with the specified ID does not exist.' });
       } 
       else {
@@ -55,13 +51,14 @@ router.get('/books/:id', (req, res) => {
 });
 
 router.post('/books', (req, res) => {
+  console.log(req.body)
   db.addBook(req.body).then(books => {
       res.json(books)
     })
     .catch(err => {
       res.status(500).send('DATABASE ERROR: ' + err.message)
-    })
-})
+    });
+});
 
 router.delete('/books/:id', (req, res) => {
   let bookId = req.params.id
