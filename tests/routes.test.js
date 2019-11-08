@@ -87,4 +87,21 @@ describe('POST /books', () => {
 
         expect(res.status).toEqual(500) 
     });
+});
+
+describe('DELETE /books', () => {
+    beforeEach(async () => {
+        await db('Books').truncate();
+    });
+    afterEach(async () => {
+        await db('Books').truncate();
+    });
+    it('should return the status 200 when the request is successful', async () => {
+        const newBook = ({ id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300, rating: 5 })
+        await request(app).post('/books').send(newBook)
+        
+        return request(app).delete('/books/1').then((res) => {
+            expect(res.status).toBe(200);
+        })
+    })
 })
