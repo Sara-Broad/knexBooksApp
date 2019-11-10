@@ -21,37 +21,28 @@ router.get('/books/sort', (req, res) => {
     })
 })
 
-// router.get('/books/:id', (req, res) => {
-//   let bookId = req.params.id
-//   db.queryById(bookId)
-//   .then(books => {
-//       res.send(books)
-//     })
-//     .catch(err => {
-//       res.status(500).send('DATABASE ERROR: ' + err.message)
-//     })
-// })
-
 
 router.get('/books/:id', (req, res) => {
   const bookId = req.params.id
   db.queryById(bookId)
     .then((books) => {
       if (books.length < 1) {
-        res.status(404).json({ message: 'The book with the specified ID does not exist.' });
-      } 
-      else {
+        res.status(404).json({
+          message: 'The book with the specified ID does not exist.'
+        });
+      } else {
         // res.send(books)
-       res.status(200).json(books)
+        res.status(200).json(books)
       }
     })
     .catch((error) => {
-      res.status(500).json({ errorMessage: 'The book could not be removed.' });
+      res.status(500).json({
+        errorMessage: 'The book could not be removed.'
+      });
     });
 });
 
 router.post('/books', (req, res) => {
-  console.log(req.body)
   db.addBook(req.body).then(books => {
       res.json(books)
     })
@@ -61,9 +52,15 @@ router.post('/books', (req, res) => {
 });
 
 router.delete('/books/:id', (req, res) => {
-  let bookId = req.params.id
-  db.deleteBook(bookId).then(books => {
-      res.json(books)
+  const bookId = req.params.id
+  db.deleteBook(bookId)
+    .then(books => {
+      if (!books) {
+        return res.status(404).send({
+          message: 'The book with this specific ID does not exist.'
+        })
+      }
+      res.status(200).json({ message: 'The book with the id has now been removed from the database.' });
     })
     .catch(err => {
       res.status(500).sendStatus('DATABASE ERROR: ' + err.message)
@@ -73,12 +70,12 @@ router.delete('/books/:id', (req, res) => {
 router.put('/books/:id', (req, res) => {
   let id = req.params.id
   db.changeRating(req.body, id).then(books => {
-    console.log('The rating has been changed')
-    res.json(books)
-  })
-  .catch(err => {
-    res.status(500).send('DATABASE ERROR: ' + err.message)
-  })
+      console.log('The rating has been changed')
+      res.json(books)
+    })
+    .catch(err => {
+      res.status(500).send('DATABASE ERROR: ' + err.message)
+    })
 })
 
 module.exports = router;

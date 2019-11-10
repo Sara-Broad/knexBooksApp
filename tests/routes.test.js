@@ -1,6 +1,9 @@
+require('dotenv').config()
+process.env.NODE_ENV = "test"
 const db = require('../db/knex')
 const app = require('../server')
 const request = require('supertest')
+
 
 describe('GET /books', () => {
     beforeEach(async () => {
@@ -89,7 +92,7 @@ describe('POST /books', () => {
     });
 });
 
-describe('DELETE /books', () => {
+describe('DELETE /books/:id', () => {
     beforeEach(async () => {
         await db('Books').truncate();
     });
@@ -100,8 +103,17 @@ describe('DELETE /books', () => {
         const newBook = ({ id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300, rating: 5 })
         await request(app).post('/books').send(newBook)
         
-        return request(app).delete('/books/1').then((res) => {
-            expect(res.status).toBe(200);
-        })
-    })
-})
+        return request(app).delete('/books/1').then((response) => {
+            expect(response.status).toBe(200);
+        });
+    });
+    it('should return a 404 error if user with a specific id does not exist', async () => {
+        const newBook = { id: 1, title: 'test', author: 'fake author', dateFinished: '01-01-2019', pages: 300, rating: 5 }
+        const res = await request(app).post('/books').send(newBook)
+
+        return request(app).delete('/books/10')
+            .then((res) => {
+                expect(res.status).toBe(404)
+            })
+    });
+});

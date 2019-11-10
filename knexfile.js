@@ -2,7 +2,17 @@
 require('dotenv').config()
 
 module.exports = {
-
+  test: {
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      directory: './db/migrations'
+    },
+    seeds: {
+      directory: './db/seeds'
+    },
+    useNullAsDefault: true
+  },
   development: {
     client: 'pg',
     // connection: {
