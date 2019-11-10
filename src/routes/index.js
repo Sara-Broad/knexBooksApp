@@ -68,14 +68,21 @@ router.delete('/books/:id', (req, res) => {
 })
 
 router.put('/books/:id', (req, res) => {
-  let id = req.params.id
-  db.changeRating(req.body, id).then(books => {
-      console.log('The rating has been changed')
-      res.json(books)
-    })
-    .catch(err => {
-      res.status(500).send('DATABASE ERROR: ' + err.message)
-    })
+  let bookId = req.params.id
+  let book = req.body
+  db.changeRating(book, bookId)
+  .then(books => {
+    if (!books) {
+      return res.status(404).send({
+        message: 'The book with this specific ID does not exist.'
+      })
+    }
+    res.status(200).json({ message: 'The book rating has been changed.' });
+  })
+  .catch(err => {
+    res.status(500).sendStatus('DATABASE ERROR: ' + err.message)
+  })
 })
+
 
 module.exports = router;
